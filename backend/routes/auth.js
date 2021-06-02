@@ -11,7 +11,7 @@ router.post("/register", async(req,res) => {
         console.log(gender);
         let imageProfile;
         if(gender === 'Male'){
-            imageProfile = 'https://lh3.googleusercontent.com/proxy/bJyCkx09i83npdcH2qeNWSb5MSFr8O5euLEl4T1sJNJNbaaPPAeJbyKUAUDS-78q4Nxj7vxUdLmwCyTNTyYtnz0I69wDpP35IFn-mpuTw4kxuouohRc'
+            imageProfile = 'https://st.depositphotos.com/2218212/2938/i/600/depositphotos_29387653-stock-photo-facebook-profile.jpg'
         }else if(gender === "Female"){
             imageProfile = 'https://i.pinimg.com/originals/f3/61/e3/f361e30b86fee7661463bf331de5b1b1.jpg'
         }else if(gender === 'Alien') {
