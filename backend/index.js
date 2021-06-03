@@ -24,10 +24,13 @@ const io = new Server(server, {
 })
 
 require('./websocket')(io)
-//routes
+
+
+//Endpoints
 app.use("/api", require('./routes/users'))
 app.use('/api', require('./routes/auth'))
 app.use('/api', require('./routes/search'))
+app.use('/api', require('./routes/friendRequests'))
 
 
 const mongoUserName = "devuser";

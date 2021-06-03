@@ -6,6 +6,8 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import socket from "./utils/ws";
+import Friends from "./views/Friends";
 //VIEWS
 import Home from "./views/Home";
 import Login from "./views/Login";
@@ -23,12 +25,21 @@ function App() {
   const user = useSelector((store) => store.user.user);
 
 
+  React.useEffect(() => {
+    if (user !== undefined) {
+      socket.emit('new-user', user.userData)
+    }
+    socket.on('users', data => {
+      console.log(data);
+    })
+  }, [])
   return (
     <Router>
       <Switch>
         <PrivateRoute component={Home} path="/" exact />
         <PrivateRoute component={Search} path="/search" />
         <PrivateRoute component={Profile} path="/profile/:id" />
+        <PrivateRoute component={Friends} path="/friends"/>
         <Route path="/login">
           <Login />
         </Route>

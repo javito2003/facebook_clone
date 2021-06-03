@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { UserAddIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import socket from "../../utils/ws";
 
 const Results = ({ query }) => {
   const token = useSelector((store) => store.user.user.token);
+  const user = useSelector(store => store.user.user.userData)
   const [users, setUsers] = useState([]);
   function getData() {
     let config = {
@@ -25,11 +27,31 @@ const Results = ({ query }) => {
         console.log(err.response);
       });
   }
+  function sendFriendRequest(_id){
+    let config = {
+      headers:{
+        token: token
+      }
+    }
+    axios.post('/friendRequest', {userDestinationId: _id}, config)
+    .then(res => {
+      console.log(res.data);
+      const toSend = {
+        _id: _id,
+        name: user.name
+      }
+      socket.emit('request', toSend )
+    })
+    .catch(err => {
+      console.log(err.response);
+    })
+  }
 
   React.useEffect(() => {
     if (query) {
       getData();
     }
+    
   }, []);
   return (
     <div className="flex-grow h-screen pb-44 pt-6 mr-4 xl:mr-40 overflow-y-auto scrollbar-hide">
@@ -39,7 +61,7 @@ const Results = ({ query }) => {
           <div className="mt-5">
             {users.length > 0 &&
               users.map((user) => (
-                <div className="mx-2 flex justify-between items-center mb-5" key={user._id}>
+                <div className="mx-2 flex justify-between items-center mb-5" key={user.objectID}>
                   <div className="flex items-center">
                     <img
                       src={user.profilePhoto}
@@ -52,7 +74,7 @@ const Results = ({ query }) => {
                     </div>
                   </div>
                   <div>
-                    <UserAddIcon className="p-2 h-10 w-10 bg-gray-200 rounded-full text-gray-700 cursor-pointer hover:bg-gray-300" />
+                    <UserAddIcon onClick={() => sendFriendRequest(user.objectID)} className="p-2 h-10 w-10 bg-gray-200 rounded-full text-gray-700 cursor-pointer hover:bg-gray-300" />
                   </div>
                 </div>
               ))}
