@@ -5,6 +5,7 @@ const friendRequestSchema = new Schema({
     userApplicantId: {type: Schema.Types.ObjectId, ref: "User"},
     userDestinationId: {type: Schema.Types.ObjectId, ref: "User"},
     time: {type: Number},
+    notifId: {type: String, required: true}
 })
 
 

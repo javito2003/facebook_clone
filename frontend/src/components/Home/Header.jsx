@@ -8,6 +8,7 @@ import {
   ViewGridIcon,
   AnnotationIcon,
   LogoutIcon,
+  UserAddIcon,
 } from "@heroicons/react/solid";
 import {
   FlagIcon,
@@ -16,19 +17,28 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/outline";
 import HeaderIcon from "./HeaderIcon";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, NavLink, useLocation, withRouter } from "react-router-dom";
+import axios from "axios";
+import { getNotifications } from "../../redux/notifDucks";
 
 const Header = (props) => {
+  const token = useSelector((store) => store.user.user.token);
   const user = useSelector((store) => store.user.user.userData);
+  const notifications = useSelector(
+    (store) => store.notifications.notifications
+  );
+  const dispatch = useDispatch()
   const [search, setSearch] = useState("");
+
   function LogOut() {
     if (localStorage.getItem("auth")) {
       localStorage.removeItem("auth");
       window.location.reload();
     }
   }
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -42,6 +52,28 @@ const Header = (props) => {
       pathname: "/search",
       search: `?name=${search}`,
     });
+  }
+
+  function readNotification(id, type) {
+    let config = {
+      headers: {
+        token: token,
+      },
+      params: {
+        notifId: id,
+      },
+    };
+    axios.put("/readnotification", null, config)
+    .then(res => {
+      if (res.data.status === 'success') {
+        dispatch(getNotifications())
+        if (type === "FriendRequest") {
+          props.history.push("/friends");
+        }
+      }
+    })
+    .catch(err => console.log(err.response))
+    
   }
 
   const { pathname } = useLocation();
@@ -76,7 +108,7 @@ const Header = (props) => {
       </div>
       {/*CENTER*/}
       <div className="flex justify-center flex-grow">
-        <div className="flex space-x-6 md:space-x-2">
+        <div className="flex lg:space-x-6 space-x-4">
           <NavLink to="/">
             {pathname === "/" ? (
               <HeaderIcon Icon={HomeIcon} active />
@@ -122,7 +154,67 @@ const Header = (props) => {
 
         <ViewGridIcon className="icon" />
         <ChatIcon className="icon" />
-        <BellIcon className="icon" />
+        <Menu as="div" className="relative inline-block">
+          {({ open }) => (
+            <>
+              <div>
+                <Menu.Button className="focus:outline-none">
+                  <BellIcon className="icon fill-current" />
+                  {notifications.length > 0 && (
+                    <span class="absolute hidden lg:inline-flex top-0 right-0  items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                      {notifications.length}
+                    </span>
+                  )}
+                </Menu.Button>
+                <Transition
+                  show={open}
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items
+                    static
+                    className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  >
+                    <div className="py-1">
+                      {notifications.map((notif) => (
+                        <>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <div>
+                                  <div
+                                    className={classNames(
+                                      active
+                                        ? "bg-gray-100 text-gray-900"
+                                        : "text-gray-700",
+                                      "px-4 py-2 text-sm flex items-center cursor-pointer"
+                                    )}
+                                    onClick={() =>
+                                      readNotification(notif._id, notif.type)
+                                    }
+                                    key={notif._id}
+                                  >
+                                    {notif.type === "FriendRequest" && (
+                                      <UserAddIcon className="h-7" />
+                                    )}
+                                    <p>{notif.description}</p>
+                                  </div>
+                              </div>
+                            )}
+                          </Menu.Item>
+                        </>
+                      ))}
+                    </div>
+                  </Menu.Items>
+                </Transition>
+              </div>
+            </>
+          )}
+        </Menu>
         <Menu as="div" className="relative inline-block">
           {({ open }) => (
             <>

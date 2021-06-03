@@ -23,6 +23,7 @@ const Profile = () => {
     axios
       .get("/user", config)
       .then((res) => {
+        console.log(res.data.data);
         setUser(res.data.data);
       })
       .catch((err) => {
@@ -34,14 +35,14 @@ const Profile = () => {
     getUser();
   }, []);
   return (
-    <div className="h-screen bg-gray-100 ">
+    <div className="bg-gray-100  ">
       <Header />
-      <div className="container mx-auto flex justify-center w-full overflow-x-hidden">
+      <div className="flex justify-center w-full overflow-hidden">
         <div>
           <UserAvatar user={user} />
-          <div className="lg:flex justify-center mt-10">
-            {/* <SidebarProfile />
-            <PostsProfile /> */}
+          <div className="lg:flex justify-center mt-10 overflow-hidden">
+            <SidebarProfile user={user} />
+            <PostsProfile /> 
           </div>
         </div>
       </div>

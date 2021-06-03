@@ -4,10 +4,10 @@ import { CalendarIcon, ClockIcon, DesktopComputerIcon, UsersIcon } from "@heroic
 import SidebarRow from './SidebarRow'
 import { NavLink } from 'react-router-dom';
 
-const Sidebar = ({src}) => {
+const Sidebar = ({src, name}) => {
     return (
         <div className="p-2 mt-5 max-w-[600px] xl:min-w-[300px]">
-            <SidebarRow src={src} title="Javier Moreno" />
+            <SidebarRow src={src} title={name} />
             <NavLink to="/friends">
                 <SidebarRow Icon={UsersIcon} title="Friends" />
             </NavLink>

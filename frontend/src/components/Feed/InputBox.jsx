@@ -24,7 +24,7 @@ const InputBox = ({profilePhoto, name, lastName}) => {
     return (
         <div className="bg-white p-4 rounded-2xl shadow-md text-gray-500 font-medium">
             <div className="flex space-x-4 pd-4 items-center mb-5">
-                <img src={profilePhoto} className="rounded-full cursor-pointer h-10 w-10 mr-2" />
+                <img src={profilePhoto} alt="" className="rounded-full cursor-pointer h-10 w-10 mr-2" />
                 <form className="flex flex-1">
                     <input type="text" ref={inputRef} className="rounded-full h-12 bg-gray-100 flex-grow px-5 focus:outline-none" placeholder={`What's on your mind, ${name} ${lastName}`} />
                     <button hidden type='submit'>

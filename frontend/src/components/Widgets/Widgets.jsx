@@ -13,7 +13,8 @@ const contacts = [
     {src: "https://links.papareact.com/r57", name: "James Bond"}
 ]
 
-const Widgets = () => {
+const Widgets = ({userDB}) => {
+    let friends = userDB.friendsId
     return (
         <div className="hidden lg:flex flex-col w-60 p-2 mt-5">
             <div className="flex justify-between items-center text-gray-500 mb-5">
@@ -25,8 +26,9 @@ const Widgets = () => {
                 </div>
             </div>
             {
-                contacts.map((contact, index) => (
-                    <Contact key={index} src={contact.src} name={contact.name} />
+                friends === undefined ? '' :
+                friends.map((contact, index) => (
+                    <Contact key={index} src={contact.profilePhoto} name={contact.name} lastName={contact.lastName} active={contact.active} />
                 ))
             }
         </div>

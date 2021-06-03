@@ -8,11 +8,11 @@ const userSchema = new Schema({
     lastName: {type: String, required: [true, 'Last name is required']},
     email: {type: String, required: [true, 'Email is required'], unique: true},
     password: {type: String, required: [true, 'Password is required']},
-    active: {type: String, default: true},
+    active: {type: Boolean, default: true},
     gender: {type: String, required: [true, 'Gender is required']},
     profilePhoto: {type:String, required: [true, 'Image is required']},
     friendsId: [{type: Schema.Types.ObjectId, ref: "User"}],
-    postsId: [{type: Schema.Types.ObjectId, ref: "Post"}]
+    //postsId: [{type: Schema.Types.ObjectId, ref: "Post"}]
 })
 
 userSchema.plugin(uniqueValidator, {message: "Error, {PATH} already exists"})

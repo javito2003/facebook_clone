@@ -7,13 +7,14 @@ import Header from '../components/Home/Header'
 
 const Home = () => {
   const user = useSelector((store) => store.user.user.userData);
+  const userDB = useSelector(store => store.userDB.userDB)
   return (
     <div className="h-screen bg-gray-100 overflow-hidden">
         <Header />
-      <div className="flex overflow-hidden">
-        <Sidebar src={user.profilePhoto} />
+      <div className="flex">
+        <Sidebar src={user.profilePhoto} name={user.name} />
         <Feed user={user} />
-        <Widgets />
+        <Widgets userDB={userDB} />
       </div>
     </div>
   );

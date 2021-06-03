@@ -1,11 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
+import { getUser } from "./redux/apiUserDucks";
+import { getNotifications } from "./redux/notifDucks";
 import socket from "./utils/ws";
 import Friends from "./views/Friends";
 //VIEWS
@@ -14,7 +16,9 @@ import Login from "./views/Login";
 import Profile from "./views/Profile";
 import Search from "./views/Search";
 
+
 function App() {
+  const dispatch = useDispatch()
   const PrivateRoute = ({ component, path, ...rest }) => {
     if (localStorage.getItem("auth")) {
       return <Route component={component} path={path} {...rest} />;
@@ -23,15 +27,21 @@ function App() {
     }
   };
   const user = useSelector((store) => store.user.user);
-
+  function getNotif(){
+    dispatch(getNotifications())
+  }
+  function updateUser(){
+    dispatch(getUser())
+  }
 
   React.useEffect(() => {
-    if (user !== undefined) {
+    updateUser()
+    if (user) {
       socket.emit('new-user', user.userData)
+      socket.on("notification", getNotif)
+      socket.on('updateUser', updateUser)
+      socket.on("setStatus", updateUser)
     }
-    socket.on('users', data => {
-      console.log(data);
-    })
   }, [])
   return (
     <Router>

@@ -31,6 +31,7 @@ app.use("/api", require('./routes/users'))
 app.use('/api', require('./routes/auth'))
 app.use('/api', require('./routes/search'))
 app.use('/api', require('./routes/friendRequests'))
+app.use('/api', require('./routes/notifications'))
 
 
 const mongoUserName = "devuser";

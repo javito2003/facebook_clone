@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SidebarFriends = ({requests, deleteRequest}) => {
+const SidebarFriends = ({requests, deleteRequest, acceptFriendRequest}) => {
     function reject(id){
         deleteRequest(id)
     }
@@ -19,7 +19,7 @@ const SidebarFriends = ({requests, deleteRequest}) => {
                                 <h4 className="font-semibold text-base">{request.userApplicantId.name} {request.userApplicantId.lastName}</h4>
                                 <p className="font-normal text-gray-500 text-sm">Friend in common</p>
                                 <div className="flex items-center">
-                                    <button className="mt-2 group relative w-full py-1 px-3 mx-2 bg-blue-500 text-white font-bold rounded-md focus:outline-none">Accept</button>
+                                    <button className="mt-2 group relative w-full py-1 px-3 mx-2 bg-blue-500 text-white font-bold rounded-md focus:outline-none" onClick={() => acceptFriendRequest(request._id, request.userApplicantId)}>Accept</button>
                                     <button className="mt-2 group relative w-full p-1 px-3 bg-gray-200 font-bold rounded-md focus:outline-none hover:bg-gray-300" onClick={() => reject(request._id)}>Reject</button>
                                 </div>
                             </div>

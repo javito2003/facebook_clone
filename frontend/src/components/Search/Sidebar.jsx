@@ -4,7 +4,7 @@ import { NewspaperIcon, AnnotationIcon, UsersIcon, PhotographIcon, VideoCameraIc
 
 const Sidebar = () => {
     return (
-        <div className="bg-white py-5 pl-4 pr-0 md:pr-20 shadow-md h-screen overflow-y-auto">
+        <div className="bg-white py-5 pl-4 pr-0 md:pr-20 shadow-md h-screen overflow-y-auto max-w-[600px] xl:min-w-[300px]">
             <div className="border-b">
                 <h1 className="flex flex-wrap sm:flex-nowrap text-3xl font-medium mb-2 ">Results</h1>
             </div>
